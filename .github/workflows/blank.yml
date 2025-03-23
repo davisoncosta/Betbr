@@ -1,0 +1,145 @@
+# Th<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cassino Online - Roleta</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #333;
+      color: white;
+      text-align: center;
+    }
+    .roulette {
+      width: 350px;
+      height: 350px;
+      margin: 20px auto;
+      border-radius: 50%;
+      background-image: url('https://via.placeholder.com/350'); /* Substitua pela imagem da roleta */
+      background-size: cover;
+    }
+    .bet-buttons {
+      margin-top: 30px;
+    }
+    .bet-buttons button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #008CBA;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .bet-buttons button:hover {
+      background-color: #005f75;
+    }
+    .balance {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+    #spin-result {
+      margin-top: 20px;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Bem-vindo ao Cassino Online</h1>
+  
+  <div class="roulette"></div>
+
+  <div class="balance">
+    <p>Seu saldo: <span id="balance">1000</span> moedas</p>
+  </div>
+
+  <div class="bet-buttons">
+    <button onclick="bet('red')">Apostar em Vermelho</button>
+    <button onclick="bet('black')">Apostar em Preto</button>
+  </div>
+
+  <div id="spin-result"></div>
+
+  <script>
+    let balance = 1000; // Saldo inicial
+
+    // Função para simular uma rotação da roleta
+    function spinRoulette() {
+      const colors = ['red', 'black'];
+      const result = colors[Math.floor(Math.random() * colors.length)];
+      return result;
+    }
+
+    // Função de aposta
+    function bet(color) {
+      if (balance <= 0) {
+        alert("Você não tem mais moedas para apostar.");
+        return;
+      }
+
+      let betAmount = 100; // Valor fixo da aposta, pode ser alterado para uma input do usuário
+
+      // Verifica se o usuário tem saldo suficiente
+      if (betAmount > balance) {
+        alert("Saldo insuficiente!");
+        return;
+      }
+
+      // Subtrai o valor da aposta do saldo
+      balance -= betAmount;
+
+      // Spin da roleta
+      let result = spinRoulette();
+
+      // Exibe o resultado da roleta e atualiza o saldo
+      document.getElementById('spin-result').textContent = `Resultado: ${result}`;
+
+      if (result === color) {
+        balance += betAmount * 2; // Dobro da aposta se o usuário ganhar
+        document.getElementById('spin-result').textContent += " - Você ganhou!";
+      } else {
+        document.getElementById('spin-result').textContent += " - Você perdeu!";
+      }
+
+      // Atualiza o saldo na tela
+      document.getElementById('balance').textContent = balance;
+    }
+  </script>
+
+</body>
+</html>is is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
